@@ -1,6 +1,7 @@
 import bcryptjs from 'bcryptjs'
 import Usuario from '../models/usuario.js'
 import { generarJWT } from '../helpers/generar-jwt.js'
+import messages from '../helpers/messages.js';
 
 export const login = async (req, res ) =>{
 
@@ -11,24 +12,18 @@ export const login = async (req, res ) =>{
     const usuario = await Usuario.findOne({ email });
     
     if ( !usuario ){
-        return res.status(400).json({
-            mensaje: 'No se encontró ningún usuario con el email proporcionado'
-        })
+        return res.status(400).json(messages.userNotFound)
     } 
 
     
     if ( !usuario.status ){
-        return res.status(400).json({
-            mensaje: 'Usuario desahabilitado '
-        })
+        return res.status(400).json(messages.userNotAvailable)
     }
 
     
     const validPassword = bcryptjs.compareSync(password, usuario.password)
     if(!validPassword){
-        return res.status(400).json({
-            mensaje: 'Password incorrecta'
-        })
+        return res.status(400).json(messages.invalidPassword)
     }
     
     const token = await generarJWT( usuario.id )

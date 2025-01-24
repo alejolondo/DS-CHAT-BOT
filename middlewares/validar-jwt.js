@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import Usuario from '../models/usuario.js';
+import messages from '../helpers/messages.js';
 
 export const validarJWT =  async ( req, res, next  ) => {
     const token = req.header('Authorization');
@@ -18,25 +19,19 @@ export const validarJWT =  async ( req, res, next  ) => {
         
         
         if (!usuario ){
-          return res.status(401).json({
-            mensaje: 'Usuario no encontrado'
-          });
+          return res.status(401).json(messages.notFound);
         }
 
         if( !usuario.status ){
-          return res.status(401).json({
-            mensaje: 'Usuario inactivo'
-          });
+          return res.status(401).json(messages.unauthorized);
         }
 
         req.usuario = usuario;
     
         next(); 
     } catch (error) {
-      console.log("🚀 ~ validarJWT ~ error:", error)
-        return res.status(401).json({
-            mensaje: 'Token invalido'
-        });
+      return res.status(401).json(messages.unauthorized);
+        
     }
 
     

@@ -1,5 +1,6 @@
 import bcryptjs from 'bcryptjs'
 import Usuario from '../models/usuario.js'
+import messages from '../helpers/messages.js';
 
 
 
@@ -9,9 +10,7 @@ export const getUsers =  async (req = request, res) => {
         const usuarios = await Usuario.find({ status: true})
     
         if( usuarios.length <= 0 ){
-        return res.status(204).json({ 
-                mensaje: 'No se encontraron usuarios en la base de datos'
-            }); 
+        return res.status(204).json(messages.userNotFound); 
         } 
    
         return res.status(200).json( { 
@@ -19,10 +18,7 @@ export const getUsers =  async (req = request, res) => {
         });
      
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({
-          mensaje: 'Hubo un error al obtener los usuarios'
-        });
+        return res.status(500).json(messages.userError);
       }
     }
     
@@ -40,7 +36,6 @@ export const getUsers =  async (req = request, res) => {
       await usuario.save();
       
       res.status(201).json({
-          msg: 'Usuario creado éxitosamente',
           usuario
       })
     }   
@@ -63,9 +58,7 @@ export const getUsers =  async (req = request, res) => {
         return  res.status(200).json({ usuario }) 
     } catch (error) {
         console.error(error);
-        return res.status(500).json({
-          mensaje: 'Hubo un error al actualizar los datos del usuario'
-        });
+        return res.status(500).json(messages.userErrorUpdate);
       
     }
       
@@ -78,12 +71,10 @@ export const getUsers =  async (req = request, res) => {
     
         const usuario = await Usuario.findByIdAndUpdate(id, { status: false } );
   
-        return res.status(200).json( {mensaje: 'Usuario deshabilitado exitosamente'} );
+        return res.status(200).json(messages.userDelete);
     } catch (error) {
         console.error(error);
-        return res.status(500).json({
-          mensaje: 'Hubo un error deshabilitar el usuario'
-        });
+        return res.status(500).json(messages.userDeleteError);
     }
     
 }

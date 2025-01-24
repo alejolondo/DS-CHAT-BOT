@@ -6,8 +6,8 @@ import { validarCampos } from '../middlewares/validar-campos.js';
 
 const router = Router()
 
-router.post('/',  chatController.crearMensaje);
-router.get('/:usuarioId', chatController.obtenerChats);
+router.post('/', [validarJWT], chatController.crearMensaje);
+router.get('/:usuarioId', [validarJWT], chatController.obtenerChats);
 
 
 

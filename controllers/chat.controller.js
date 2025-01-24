@@ -2,6 +2,7 @@ import Mensaje from "../models/mensaje.js";
 import Usuario from "../models/usuario.js";
 import Chat from "../models/chat.js";
 import { generateChatResponse } from "../utils/openai.js";
+import messages from "../helpers/messages.js";
 
 
 
@@ -10,13 +11,13 @@ export const crearMensaje = async (req, res) => {
       const { usuario, contenido, chatId } = req.body;
   
       if (!usuario || !contenido) {
-        return res.status(400).json({ error: "Usuario y contenido son obligatorios" });
+        return res.status(400).json(messages.incorrectData);
       }
   
    
       const usuarioExistente = await Usuario.findById(usuario);
       if (!usuarioExistente) {
-        return res.status(404).json({ error: "El usuario no existe." });
+        return res.status(404).json(messages.userNotFound);
       }
   
       let chat;
@@ -25,7 +26,7 @@ export const crearMensaje = async (req, res) => {
        
         chat = await Chat.findById( chatId ).populate("mensajes");
         if (!chat) {
-          return res.status(404).json({ error: "La conversación no existe." });
+          return res.status(404).json(messages.chatNotFound);
         }
       } else {
         
@@ -48,7 +49,7 @@ export const crearMensaje = async (req, res) => {
       
       const botUsuario = await Usuario.findOne({ email: "bot@DSIntegration.co" });
       if (!botUsuario) {
-        return res.status(500).json({ error: "El usuario del bot no está configurado." });
+        return res.status(500).json(messages.userBotNotFound);
       }
   
       
@@ -71,8 +72,7 @@ export const crearMensaje = async (req, res) => {
         },
       });
     } catch (error) {
-      console.error("Error al crear el mensaje:", error);
-      res.status(500).json({ error: "Error al crear el mensaje." });
+      res.status(500).json(messages.messageError);
     }
   };
   
@@ -84,7 +84,7 @@ export const crearMensaje = async (req, res) => {
   
       const usuarioExistente = await Usuario.findById(usuarioId);
       if (!usuarioExistente) {
-        return res.status(404).json({ error: "El usuario no existe." });
+        return res.status(404).json(messages.userNotFound);
       }
   
       
@@ -99,8 +99,7 @@ export const crearMensaje = async (req, res) => {
         conversaciones,
       });
     } catch (error) {
-      console.error("Error al obtener conversaciones:", error);
-      res.status(500).json({ error: "Error al obtener conversaciones." });
+      res.status(500).json(messages.chatError);
     }
   };
   
