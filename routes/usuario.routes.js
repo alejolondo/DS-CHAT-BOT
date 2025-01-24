@@ -13,6 +13,7 @@ router.post('/',  [
     validarJWT,
     check('password', 'Password must have 6 characters ').isLength({min: 6}),
     check('nombre', 'El nombre es un campo requerido').not().isEmpty(),
+    check('restriction', 'Restriction debe ser un numero positivo').isInt({ min: 2 }),
     check('email').custom( emailExiste ),
     validarCampos
     ], 

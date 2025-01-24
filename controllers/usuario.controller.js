@@ -25,8 +25,8 @@ export const getUsers =  async (req = request, res) => {
   
   export const postUsers = async (req, res) => {
   
-      const {nombre, email, password } = req.body;
-      const usuario = new Usuario( {nombre, email, password } );
+      const {nombre, email, password, restriction } = req.body;
+      const usuario = new Usuario( {nombre, email, password, restriction } );
   
   
       const salt = bcryptjs.genSaltSync();

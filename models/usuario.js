@@ -18,7 +18,10 @@ const UsuarioSchema = new Schema({
         type: Boolean,
         default: true
     },
-
+    restriction: { 
+        type: Number,
+        required: [true, 'La restriccion es obligatorio'],
+    }
 });
 
 //Retornar uid en lugar del _id 
