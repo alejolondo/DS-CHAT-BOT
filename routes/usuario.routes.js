@@ -10,7 +10,7 @@ const router = Router()
 router.get('/', [validarJWT], usuarioController.getUsers )
 
 router.post('/',  [
-    validarJWT,
+    // validarJWT,
     check('password', 'Password must have 6 characters ').isLength({min: 6}),
     check('nombre', 'El nombre es un campo requerido').not().isEmpty(),
     check('email').custom( emailExiste ),
@@ -34,7 +34,6 @@ router.delete('/:id', [
     ],
     usuarioController.deleteUsers)
 
-router.post('/:id/empresas', usuarioController.asignarEmpresa);
 
 
 export default router;

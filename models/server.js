@@ -3,8 +3,8 @@ import cors  from 'cors';
 import { dbConnection }  from '../database/config.js'
 import usuariosRoutes from '../routes/usuario.routes.js'
 import authRoutes from '../routes/auth.routes.js'
-import empresasRoutes from '../routes/empresa.routes.js'
-import puntoVentaRoutes from '../routes/puntoVenta.routes.js'
+import mensajeRoutes from '../routes/chat.routes.js'
+import { createSystemUser } from "../utils/initialSetUp.js"
 
 export class Server {
 
@@ -13,11 +13,11 @@ export class Server {
         this.port = process.env.PORT || 3000;
         this.authPath = '/api/auth';
         this.usuariosPath = '/api/usuarios';
-        this.empresasPath = '/api/empresas';
-        this.puntoVentaPath = '/api/punto-venta';
+        this.mensajePath = '/api/mensajes';
 
         this.conectarBaseDatos();
 
+        this.createSystemUser();
          
         this.middlewares();
 
@@ -30,6 +30,10 @@ export class Server {
 
     async conectarBaseDatos(){
         await dbConnection()
+    }
+
+    async createSystemUser(){
+        await createSystemUser();
     }
 
 
@@ -51,8 +55,7 @@ export class Server {
         
         this.app.use( this.authPath, authRoutes );
         this.app.use( this.usuariosPath, usuariosRoutes );
-        this.app.use( this.empresasPath, empresasRoutes );
-        this.app.use( this.puntoVentaPath, puntoVentaRoutes);
+        this.app.use( this.mensajePath, mensajeRoutes);
 
     }
 

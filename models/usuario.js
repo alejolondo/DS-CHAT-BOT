@@ -18,12 +18,7 @@ const UsuarioSchema = new Schema({
         type: Boolean,
         default: true
     },
-    empresas: [
-        {
-          empresaId: { type: Schema.Types.ObjectId, ref: 'Empresa', required: true },
-          rol: { type: String, required: true }, 
-        }
-      ]
+
 });
 
 //Retornar uid en lugar del _id 
