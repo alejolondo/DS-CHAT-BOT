@@ -64,14 +64,9 @@ export const crearMensaje = async (req, res) => {
       chat.updatedAt = new Date();
       await chat.save();
   
-      res.status(201).json({
-        message: "Mensaje guardado exitosamente.",
-        conversacion: {
-          id: chat._id,
-          mensajes: chat.mensajes,
-        },
-      });
+      res.status(201).json(mensajeBot);
     } catch (error) {
+      console.log("🚀 ~ crearMensaje ~ error:", error)
       res.status(500).json(messages.messageError);
     }
   };

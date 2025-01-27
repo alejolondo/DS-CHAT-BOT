@@ -9,7 +9,7 @@ const router = Router()
 
 router.post('/', [
     validarJWT,
-    check('usuario').custom( cantidadMensajes ),
+    // check('usuario').custom( cantidadMensajes ),
     validarCampos
 ], chatController.crearMensaje);
 
